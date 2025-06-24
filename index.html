@@ -1,102 +1,49 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <title>我的文件空间</title>
+  <meta charset="UTF-8">
+  <title>我的自动文件展示页</title>
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: "微软雅黑", sans-serif;
-      background-image: url("https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80");
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      color: #fff;
-    }
-
-    .overlay {
-      background-color: rgba(0, 0, 0, 0.5);
-      padding: 60px 20px;
-      min-height: 100vh;
-    }
-
-    h1 {
-      text-align: center;
-      font-size: 36px;
-      margin-bottom: 40px;
-      color: #ffffff;
-      text-shadow: 1px 1px 4px #333;
-    }
-
-    ul {
-      list-style: none;
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 0;
-    }
-
-    li {
-      margin: 10px 0;
-      border-bottom: 1px solid #ddd;
-      padding: 10px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
-    }
-
-    a {
-      color: #ffffff;
-      font-size: 16px;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    footer {
-      text-align: center;
-      margin-top: 40px;
-      font-size: 14px;
-      color: #ccc;
-    }
+    body { font-family: sans-serif; padding: 30px; max-width: 800px; margin: auto; background: #f5f5f5; }
+    h1 { text-align: center; color: #3366cc; }
+    ul { list-style: none; padding-left: 0; }
+    li { margin: 8px 0; }
+    a { color: #0077cc; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    footer { margin-top: 40px; text-align: center; color: #888; font-size: 14px; }
   </style>
 </head>
 <body>
-  <div class="overlay">
-    <h1>📁 我的文件空间</h1>
-    <ul id="file-list">
-      <!-- 文件列表自动填充 -->
-    </ul>
-    <footer>
-      页面由 GitHub Pages 提供支持 ｜ 最后更新：2025-06-24
-    </footer>
-  </div>
+  <h1>📁 我的文件空间</h1>
+  <ul id="file-list">加载中...</ul>
+  <footer>自动读取公开文件列表 ｜ GitHub Pages 支持</footer>
 
   <script>
-    const files = [
-      // 你上传的文件名放这里👇（图片、文本、文档等都可以）
-      "photo_2025-06-19_11-09-11.jpg",
-      "photo_2025-06-19_11-08-56.jpg",
-      "photo_2025-06-19_11-07-08.jpg",
-      "photo_2025-06-19_00-29-12.jpg",
-      "价值观人生.txt",
-      "吸引话术.txt",
-      "七天开单思路以及框架.docx",
-      "各种账号密码.txt",
-      "index.html"
-    ];
+    const repo = "ruyiwj/ruyiwj.github.io";
+    const branch = "main";
 
-    const ul = document.getElementById("file-list");
-    files.forEach(file => {
-      const li = document.createElement("li");
-      const a = document.createElement("a");
-      a.href = file;
-      a.textContent = file;
-      a.target = "_blank";
-      li.appendChild(a);
-      ul.appendChild(li);
-    });
+    fetch(`https://api.github.com/repos/${repo}/contents/?ref=${branch}`)
+      .then(res => res.json())
+      .then(files => {
+        const list = document.getElementById("file-list");
+        list.innerHTML = "";
+
+        files.forEach(file => {
+          // 过滤掉 index.html 或 viewer.html 本身
+          if (file.name === "index.html" || file.name === "viewer.html") return;
+
+          const li = document.createElement("li");
+          const a = document.createElement("a");
+          a.href = file.download_url;
+          a.textContent = file.name;
+          a.target = "_blank";
+          li.appendChild(a);
+          list.appendChild(li);
+        });
+      })
+      .catch(err => {
+        document.getElementById("file-list").textContent = "❌ 加载失败：" + err.message;
+      });
   </script>
 </body>
 </html>
