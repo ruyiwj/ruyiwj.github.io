@@ -1,0 +1,48 @@
+https://github.com/Genymobile/scrcpy/releases 新手机链接
+
+https://github.com/Genymobile/scrcpy/releases/download/v2.3/scrcpy-win64-v2.3.zip 直接机位
+
+步骤：
+
+✅ 1. 在手机上执行「撤销 USB 调试授权」
+打开手机的：
+
+设置 → 系统 → 开发者选项
+
+找到【撤销 USB 调试授权】→ 点一下
+
+然后重新插拔数据线
+
+插上之后，手机会重新弹出提示
+
+✅ 勾选「始终允许」
+
+✅ 点击「允许」
+
+解决不弹的方案：
+✅ 方法一：用内置虚拟光驱安装 Honor Suite 驱动
+插上手机 → 打开“此电脑”
+
+你应该会看到一个“CD 驱动器（E:） Honor Suite”
+
+打开它 → 找到 HonorSuiteOnlineInstaller.exe 或 .exe 文件
+
+双击安装，直到完成（就是官方驱动）
+
+🧩 安装完之后，手机立刻会被 adb 识别，授权弹窗也会正常弹出
+
+
+📌 操作步骤：
+打开你之前的 scrcpy-win64-v2.3 文件夹
+
+找到并双击这个文件：
+
+javascript
+复制
+编辑
+scrcpy-console.bat
+或者你也可以双击：
+
+复制
+编辑
+scrcpy.exe
