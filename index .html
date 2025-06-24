@@ -1,34 +1,81 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <title>我的内容列表</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>我的文件空间</title>
   <style>
-    body { font-family: sans-serif; padding: 30px; max-width: 800px; margin: auto; }
-    h1 { text-align: center; }
-    ul { line-height: 2; }
-    a { color: #007acc; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    footer { margin-top: 40px; text-align: center; color: #888; font-size: 14px; }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "微软雅黑", sans-serif;
+      background-image: url("https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: #fff;
+    }
+    .container {
+      background: rgba(0, 0, 0, 0.6);
+      margin: 40px auto;
+      padding: 20px 30px;
+      max-width: 800px;
+      border-radius: 10px;
+    }
+    h1 {
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      margin: 10px 0;
+    }
+    a {
+      color: #7ddfff;
+      text-decoration: none;
+      font-size: 16px;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 12px;
+      color: #ccc;
+    }
   </style>
 </head>
 <body>
-  <h1>📁 我的内容列表</h1>
+  <div class="container">
+    <h1>📁 我的文件空间</h1>
+    <ul id="file-list"></ul>
+    <footer>
+      页面由 GitHub Pages 提供 | 最近更新：<span id="update-time"></span>
+    </footer>
+  </div>
 
-  <h2>📷 图片</h2>
-  <ul>
-    <li><a href="photo_2025-06-18_17-42-57.jpg" target="_blank">photo_2025-06-18_17-42-57.jpg</a></li>
-    <li><a href="photo_2025-06-18_17-49-04.jpg" target="_blank">photo_2025-06-18_17-49-04.jpg</a></li>
-    <li><a href="photo_2025-06-19_00-29-12.jpg" target="_blank">photo_2025-06-19_00-29-12.jpg</a></li>
-    <li><a href="photo_2025-06-19_11-07-08.jpg" target="_blank">photo_2025-06-19_11-07-08.jpg</a></li>
-  </ul>
+  <script>
+    // 自动读取当前仓库的文件列表
+    fetch("https://api.github.com/repos/ruyiwj/ruyiwj.github.io/contents")
+      .then((res) => res.json())
+      .then((files) => {
+        const list = document.getElementById("file-list");
+        files.forEach((file) => {
+          if (file.name !== "index.html") {
+            const li = document.createElement("li");
+            li.innerHTML = `<a href="${file.name}" target="_blank">${file.name}</a>`;
+            list.appendChild(li);
+          }
+        });
+      });
 
-  <h2>📄 文本文档</h2>
-  <ul>
-    <li><a href="0dd1f5f4-215c-4568-84a1-e96a7fe6f7c5.txt" target="_blank">文档1</a></li>
-    <li><a href="35ca49fd-d5a1-4baa-943a-fa37a2b4d870.txt" target="_blank">文档2</a></li>
-  </ul>
-
-  <footer>本站由 GitHub Pages 提供支持 | 最后更新：2025-06-24</footer>
+    // 显示当前更新时间
+    document.getElementById("update-time").innerText = new Date().toLocaleDateString();
+  </script>
 </body>
 </html>
